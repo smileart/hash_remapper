@@ -26,8 +26,8 @@ Or install it yourself as:
 
 * maps original keys to the new ones [1](#map)
 * auto-ignores all the skipped keys [2](#ignore)
-* preprocesses the value with a lambda [3](#lambda)
-* allows remap keys within preprocessing [4](#preprocessing)
+* preprocesses a value with a lambda [3](#lambda)
+* allows to remap the keys within preprocessing [4](#preprocessing)
 * allows to keep data subsets only [5](#subset)
 * allows to include data with the original keynames [6](#originals)
 * allows to use global context to create composite fields [7](#composite)
