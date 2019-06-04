@@ -15,7 +15,11 @@ RSpec.describe HashRemapper do
         really: {
           deep: true
         }
-      }
+      },
+      recursive: [
+        {number: 21},
+        {number: 42}
+      ]
     }
   end
 
@@ -55,9 +59,10 @@ RSpec.describe HashRemapper do
 
       expected_hash = {
         'data' => [1, 2, 'string!'],
-        :ignore => :me,
-        :magic_number => 42,
-        :nested => { hash: :data, really: { deep: true } }
+        ignore: :me,
+        magic_number: 42,
+        nested: { hash: :data, really: { deep: true } },
+        recursive: [{ number: 21 }, { number: 42 }]
       }
 
       expect(new_hash).to eq(expected_hash)
@@ -141,10 +146,19 @@ RSpec.describe HashRemapper do
     it 'allows to remap to the deep values within the context' do
       new_hash = HashRemapper.remap(
         original_hash,
-        test: [:magic_bool, %i[nested really deep]]
+        test: [:magic_bool, 'nested.really.deep']
       )
 
       expect(new_hash).to eq(magic_bool: true)
+    end
+
+    it 'allows to remap to the deep values within the context' do
+      new_hash = HashRemapper.remap(
+        original_hash,
+        test: [:magic_numbers, 'recursive.*.number']
+      )
+
+      expect(new_hash).to eq(magic_numbers: [21, 42])
     end
 
     it 'allows to create completely new keys' do

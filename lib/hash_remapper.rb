@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require 'set'
+require 'hash_digger'
 
 # Utility class to map original Hash keys to the new ones
 class HashRemapper
   # Current Library Version
-  VERSION = '0.1.0'
+  VERSION = '0.2.0'
 
   class << self
     # Remaps `data` Hash by renaming keys, creating new ones and
@@ -63,6 +64,7 @@ class HashRemapper
 
     # Method to try to handle data digging
     # (if the mapping value is enumerable)
+    # @see https://github.com/smileart/hash_digger
     #
     # @param [Object] to the target key to map to
     # @param [Hash] data the whole original Hash to use as the digging target
@@ -71,7 +73,15 @@ class HashRemapper
     def try_digging(to, data)
       return unless to.respond_to?(:each)
 
-      [to.first, data.dig(*to.last)]
+      # @see https://github.com/DamirSvrtan/fasterer — fetch_with_argument_vs_block
+      [
+        to.fetch(0),
+        HashDigger::Digger.dig(
+          data: data,
+          path: to.fetch(1) { '*' },
+          strict: to.fetch(2) { true }
+        )
+      ]
     end
 
     # Method which automatically prepares direct mapping (e.g. { :a => :a })

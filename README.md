@@ -26,7 +26,7 @@ Or install it yourself as:
 
 * maps original keys to the new ones [1](#map)
 * auto-ignores all the skipped keys [2](#ignore)
-* preprocesses a value with a lambda [3](#lambda)
+* preprocess a value with a lambda [3](#lambda)
 * allows to remap the keys within preprocessing [4](#preprocessing)
 * allows to keep data subsets only [5](#subset)
 * allows to include data with the original keynames [6](#originals)
@@ -42,20 +42,24 @@ Or install it yourself as:
 ```rb
 # Having such a Hash
 original_hash = {
-  test: 42,
-  'data' => [
-    1,
-    2,
-    'string!'
-  ],
-  ignore: :me,
-  nested: {
-    hash: :data,
-    really: {
-      deep: true
-    }
+    test: 42,
+    'data' => [
+      1,
+      2,
+      'string!'
+    ],
+    ignore: :me,
+    nested: {
+      hash: :data,
+      really: {
+        deep: true
+      }
+    },
+    recursive: [
+      {number: 21},
+      {number: 42}
+    ]
   }
-}
 ```
 
 ## 0: Basic Idea
@@ -239,12 +243,22 @@ HashRemapper.remap(
 ```rb
 HashRemapper.remap(
   original_hash,
-  test: [:magic_bool, %i[nested really deep]]
+  test: [:magic_bool, 'nested.really.deep']]
 )
 
 # =>
 # {
 #   magic_bool: true
+# }
+
+HashRemapper.remap(
+  original_hash,
+  test: [:magic_numbers, 'recursive.*.number']]
+)
+
+# =>
+# {
+#   magic_numbers: [21, 42]
 # }
 ```
 
@@ -272,7 +286,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Initial version of this lib was written in pair with [@bronislav](https://github.com/bronislav), so thank him for invaluabale contribution and help.
+Initial version of this lib was written in pair with [@bronislav](https://github.com/bronislav), so thank him for the invaluable contribution and help.
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/smileart/hash_remapper. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
@@ -282,4 +296,4 @@ The gem is available as open source under the terms of the [MIT License](http://
 
 ## Code of Conduct
 
-Everyone interacting in the HashRemapper project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/smileart/hash_remapper/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the HashRemapper project’s codebase, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/smileart/hash_remapper/blob/master/CODE_OF_CONDUCT.md).
