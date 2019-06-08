@@ -152,13 +152,22 @@ RSpec.describe HashRemapper do
       expect(new_hash).to eq(magic_bool: true)
     end
 
-    it 'allows to remap to the deep values within the context' do
+    it 'allows to remap to the deep values recursively' do
       new_hash = HashRemapper.remap(
         original_hash,
         test: [:magic_numbers, 'recursive.*.number']
       )
 
       expect(new_hash).to eq(magic_numbers: [21, 42])
+    end
+
+    it 'allows to use native digging from v0.1.0' do
+      new_hash = HashRemapper.remap(
+        original_hash,
+        test: [:magic_bool, %i[nested really deep]]
+      )
+
+      expect(new_hash).to eq(magic_bool: true)
     end
 
     it 'allows to create completely new keys' do
