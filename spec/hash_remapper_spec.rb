@@ -17,8 +17,9 @@ RSpec.describe HashRemapper do
         }
       },
       recursive: [
-        {number: 21},
-        {number: 42}
+        { number: 21 },
+        { number: 42 },
+        { test: 13 }
       ]
     }
   end
@@ -62,7 +63,7 @@ RSpec.describe HashRemapper do
         ignore: :me,
         magic_number: 42,
         nested: { hash: :data, really: { deep: true } },
-        recursive: [{ number: 21 }, { number: 42 }]
+        recursive: [{ number: 21 }, { number: 42 }, { test: 13 }]
       }
 
       expect(new_hash).to eq(expected_hash)
@@ -146,19 +147,38 @@ RSpec.describe HashRemapper do
     it 'allows to remap to the deep values within the context' do
       new_hash = HashRemapper.remap(
         original_hash,
-        test: [:magic_bool, 'nested.really.deep']
+        test: [:magic_bool, {path: 'nested.really.deep'}]
       )
 
       expect(new_hash).to eq(magic_bool: true)
     end
 
     it 'allows to remap to the deep values recursively' do
-      new_hash = HashRemapper.remap(
+      expect(HashRemapper.remap(
         original_hash,
-        test: [:magic_numbers, 'recursive.*.number']
-      )
+        test: [:magic_numbers, {path: 'recursive.*.number', strict: false}]
+      )).to eq(magic_numbers: [21, 42, nil])
 
-      expect(new_hash).to eq(magic_numbers: [21, 42])
+      # test default path falling into "*"
+      expect(HashRemapper.remap(
+        original_hash,
+        test: [:magic_numbers, {}]
+      )).to eq(magic_numbers: original_hash.deep_symbolize_keys)
+
+      expect {HashRemapper.remap(
+        original_hash,
+        test: [:magic_numbers, {path: 'recursive.*.number'}]
+      )}.to raise_error(HashDigger::DigError)
+
+      expect(HashRemapper.remap(
+        original_hash,
+        test: [:magic_numbers, {path: 'recursive.*.number', strict: false, default: 3.14}]
+      )).to eq(magic_numbers: [21, 42, 3.14])
+
+      expect(HashRemapper.remap(
+        original_hash,
+        test: [:magic_numbers, {path: 'recursive.*.number', strict: false, lambda: ->(result) { result.compact }}]
+      )).to eq(magic_numbers: [21, 42])
     end
 
     it 'allows to use native digging from v0.1.0' do

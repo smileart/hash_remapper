@@ -56,8 +56,9 @@ original_hash = {
       }
     },
     recursive: [
-      {number: 21},
-      {number: 42}
+      { number: 21 },
+      { number: 42 },
+      { test: 13 }
     ]
   }
 ```
@@ -91,6 +92,7 @@ HashRemapper.remap(
 #   data: [1, 2, 'string!'],
 #   dont_ignore: :me,
 #   internal: { hash: :data, really: { deep: true } },
+#   recursive: [ { number: 21 }, { number: 42 }, { test: 13 } ]
 # }
 ```
 
@@ -119,6 +121,7 @@ HashRemapper.remap(
 #    :ignore => :me,
 #    :magic_number => 42,
 #    :nested => {:hash=>:data, :really=>{:deep=>true}}
+#    :recursive => [ { number: 21 }, { number: 42 }, { test: 13 } ]
 #  }
 ```
 
@@ -241,9 +244,10 @@ HashRemapper.remap(
 ## <a name="deep">11</a>: Remap to the deep values
 
 ```rb
+# INFO: For advanced usage see the specs!
 HashRemapper.remap(
   original_hash,
-  test: [:magic_bool, 'nested.really.deep']]
+  test: [:magic_bool, { path: 'nested.really.deep' }]]
 )
 
 # =>
@@ -253,12 +257,12 @@ HashRemapper.remap(
 
 HashRemapper.remap(
   original_hash,
-  test: [:magic_numbers, 'recursive.*.number']]
+  test: [:magic_numbers, {path: 'recursive.*.number', strict: false}]]
 )
 
 # =>
 # {
-#   magic_numbers: [21, 42]
+#   magic_numbers: [21, 42, nil]
 # }
 ```
 

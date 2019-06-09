@@ -6,7 +6,7 @@ require 'hash_digger'
 # Utility class to map original Hash keys to the new ones
 class HashRemapper
   # Current Library Version
-  VERSION = '0.2.1'
+  VERSION = '0.3.0'
 
   class << self
     # Remaps `data` Hash by renaming keys, creating new ones and
@@ -73,16 +73,23 @@ class HashRemapper
     def try_digging(to, data)
       return unless to.respond_to?(:each)
 
-      # v0.1.0 backward compartability layer
-      return [to.first, data.dig(*to.last)] if to.fetch(1).kind_of?(Array)
+      digger_args = to.fetch(1)
+
+      # v0.1.0 backward compartability layer ([new_key, [:digg, :path, :keys]])
+      return [to.first, data.dig(*to.last)] if digger_args.kind_of?(Array)
+
+      lambda = digger_args.fetch(:lambda) { nil }
 
       # @see https://github.com/DamirSvrtan/fasterer — fetch_with_argument_vs_block
+      # @see https://github.com/smileart/hash_digger — digger args
       [
         to.fetch(0),
         HashDigger::Digger.dig(
           data: data,
-          path: to.fetch(1) { '*' },
-          strict: to.fetch(2) { true }
+          path: digger_args.fetch(:path) { '*' },
+          strict: digger_args.fetch(:strict) { true },
+          default: digger_args.fetch(:default) { nil },
+          &lambda
         )
       ]
     end
