@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 # coding: utf-8
 
-lib = File.expand_path('./lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+# lib = File.expand_path('./lib', __FILE__)
+# $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 # to avoid double const init warning
 require_relative './lib/hash_remapper'
@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubygems-tasks', '~> 0.2'
   spec.add_development_dependency 'simplecov',      '~> 0.15'
   spec.add_development_dependency 'yard',           '~> 0.9'
+
 
   spec.add_runtime_dependency 'hash_digger',        '~> 0.0'
 end

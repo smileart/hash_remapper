@@ -29,13 +29,13 @@ Or install it yourself as:
 * preprocess a value with a lambda [3](#lambda)
 * allows to remap the keys within preprocessing [4](#preprocessing)
 * allows to keep data subsets only [5](#subset)
-* allows to include data with the original keynames [6](#originals)
+* allows to include data with the original key names [6](#originals)
 * allows to use global context to create composite fields [7](#composite)
 * merges values if the key already exists and supports #merge [8](#merge)
 * replaces values if the key already exists and doesn't support #merge [9](#replace)
 * allows to assign static defaults through lambdas [10](#defaults)
 * allows to remap to the deep values within the context [11](#deep)
-* allows to create completely new keys [12](#new_keys)
+* allows to create completely new keys (including nested ones) [12](#new_keys)
 
 ## Usage
 
@@ -167,7 +167,7 @@ HashRemapper.remap(
 # }
 ```
 
-## <a name="originals">6</a>: Include data with the original keyname
+## <a name="originals">6</a>: Include data with the original key name
 
 ```rb
 HashRemapper.remap(
@@ -266,7 +266,7 @@ HashRemapper.remap(
 # }
 ```
 
-## <a name="new_keys">12</a>: Create completely new keys
+## <a name="new_keys">12</a>: Create completely new keys (including nested ones)
 
 ```rb
 HashRemapper.remap(
@@ -279,6 +279,54 @@ HashRemapper.remap(
 # {
 #   magic_number: 42,
 #   absolutely_new_key: 'shiny new value'
+# }
+
+HashRemapper.remap(
+  original_hash,
+  _: [[:nested, :new, :key], :test]
+)
+
+# =>
+# {
+#   nested: {
+#     new: {
+#       key: 42
+#     }
+#   }
+# }
+
+
+# mapping a deep target from a deep source (BEWARE an old digging API <= v0.1.0)
+HashRemapper.remap(
+  original_hash,
+  _: [[:nested, :new, :key], [:nested,  :really, :deep]]
+)
+
+# =>
+# {
+#   nested: {
+#     new: {
+#       key: true
+#     }
+#   }
+# }
+
+
+# mapping a deep target from a deep source (new digging API >= v0.2.0)
+HashRemapper.remap(
+  original_hash,
+  _: [[:new, :deeply, :nested, :value], {path: 'recursive.*.number', strict: false, default: 3.14}]
+)
+
+# =>
+# {
+#   new: {
+#     deeply: {
+#       nested: {
+#         value: [21, 42, 3.14]
+#       }
+#     }
+#   }
 # }
 ```
 
