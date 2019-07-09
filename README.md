@@ -5,7 +5,8 @@
 </p>
 
 > A little lib which maps original keys to the new ones <sup>[*](#features)</sup>
-> [![Build Status](https://travis-ci.org/smileart/hash_remapper.svg?branch=master)](https://travis-ci.org/smileart/hash_remapper)
+>
+> [![Build Status](https://travis-ci.org/smileart/hash_remapper.svg?branch=master)](https://travis-ci.org/smileart/hash_remapper) ![Gem](https://img.shields.io/gem/v/hash_remapper.svg)
 
 ## Installation
 
