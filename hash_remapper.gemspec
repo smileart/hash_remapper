@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 # coding: utf-8
 
-lib = File.expand_path('./lib')
+lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'hash_remapper'
+require 'hash_remapper/version'
 
-Gem::Specification.new do |spec|
+HashRemapper::GEMSPEC = Gem::Specification.new do |spec|
   spec.name          = 'hash_remapper'
   spec.version       = HashRemapper::VERSION
   spec.authors       = ['Serge Bedzhyk']
@@ -25,6 +25,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'hash_digger', '~> 0.0', '>= 0.0.4'
+
   spec.add_development_dependency 'bundler',        '~> 2.0'
   spec.add_development_dependency 'byebug',         '~> 11.0'
   spec.add_development_dependency 'inch',           '>= 0.9.0.rc1'
@@ -35,6 +37,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubygems-tasks', '~> 0.2'
   spec.add_development_dependency 'simplecov',      '~> 0.15'
   spec.add_development_dependency 'yard',           '~> 0.9'
-
-  spec.add_runtime_dependency 'hash_digger',        '>= 0.0.3'
 end

@@ -8,9 +8,6 @@ require 'byebug'  if ENV['DEBUG']
 
 # Utility class to map original Hash keys to the new ones
 class HashRemapper
-  # Current Library Version
-  VERSION = '0.4.1'
-
   class << self
     # Remaps `data` Hash by renaming keys, creating new ones and
     # optionally aggregating values
