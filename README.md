@@ -332,6 +332,10 @@ HashRemapper.remap(
 # }
 ```
 
+## Examples
+
+For advanced usage and examples see [specs](./spec/hash_remapper_spec.rb) and [examples](./exmaples)
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
