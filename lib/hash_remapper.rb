@@ -3,7 +3,7 @@
 require 'set'
 require 'hash_digger'
 
-require 'letters' if ENV['DEBUG']
+require 'tapp' if ENV['DEBUG']
 require 'byebug'  if ENV['DEBUG']
 
 # Utility class to map original Hash keys to the new ones

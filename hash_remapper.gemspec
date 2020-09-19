@@ -25,16 +25,16 @@ HashRemapper::GEMSPEC = Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'hash_digger', '~> 0.0', '>= 0.0.4'
+  spec.add_dependency 'hash_digger', '~> 0.1'
 
-  spec.add_development_dependency 'bundler',        '~> 2.0'
-  spec.add_development_dependency 'byebug',         '~> 11.0'
+  spec.add_development_dependency 'bundler',        '~> 2.1'
+  spec.add_development_dependency 'byebug',         '~> 11.1'
   spec.add_development_dependency 'inch',           '>= 0.9.0.rc1'
-  spec.add_development_dependency 'letters',        '~> 0.4'
-  spec.add_development_dependency 'rake',           '~> 12.2'
-  spec.add_development_dependency 'rspec',          '~> 3.7'
-  spec.add_development_dependency 'rubocop',        '~> 0.51'
+  spec.add_development_dependency 'rake',           '~> 13.0'
+  spec.add_development_dependency 'rspec',          '~> 3.9'
+  spec.add_development_dependency 'rubocop',        '~> 0.91'
   spec.add_development_dependency 'rubygems-tasks', '~> 0.2'
-  spec.add_development_dependency 'simplecov',      '~> 0.15'
+  spec.add_development_dependency 'simplecov',      '~> 0.19'
+  spec.add_development_dependency 'tapp',           '~> 1.5'
   spec.add_development_dependency 'yard',           '~> 0.9'
 end

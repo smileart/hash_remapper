@@ -1,6 +1,6 @@
 require 'hash_digger'
 require 'hash_remapper'
-require 'letters'
+require 'tapp'
 
 data = {
   :books => [
@@ -67,7 +67,7 @@ raw_result = HashRemapper.remap(
   data,
   titles: [:titles, { path: 'books.*.title' }],
   isbns: [:isbns, { path: 'books.*.editions.*.*.isbn' }]
-).o
+).tapp
 
 puts '='*50
 puts
@@ -77,13 +77,13 @@ isbn_result = HashRemapper.remap(
   data,
   titles: [:titles, { path: 'books.*.title' }],
   isbns: [:isbns, { path: 'books.*.editions.*', lambda: ->(editions) { editions.collect { |edition| HashDigger::Digger.dig(data: edition, path: '*.isbn') } } }]
-).o
+).tapp
 
 puts '='*50
 puts
 
 puts "Then we zip the data together in key => value format:"
-Hash[isbn_result[:titles].zip(isbn_result[:isbns])].o
+Hash[isbn_result[:titles].zip(isbn_result[:isbns])].tapp
 
 puts '='*50
 puts ''
@@ -97,4 +97,4 @@ isbn_result[:titles].each_with_index do |t, i|
   }
 end
 
-books_with_isbns.o
+books_with_isbns.tapp
